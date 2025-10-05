@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: picknmat
+    env: docker
+    rootDir: PicknMat/PicknMat
+    plan: free
+    autoDeploy: true
+    region: frankfurt
+    healthCheckPath: /
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    dockerCommand: "node dist/index.js"
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: VITE_FIREBASE_API_KEY
+        sync: false
+      - key: VITE_FIREBASE_PROJECT_ID
+        sync: false
+      - key: VITE_FIREBASE_APP_ID
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT_JSON
+        sync: false
+    autoScale:
+      minInstances: 1
+      maxInstances: 1
+      targetCPUPercent: 70
+    routes:
+      - type: rewrite
+        source: /.*/
+        destination: /
